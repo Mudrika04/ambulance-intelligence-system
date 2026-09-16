@@ -1,0 +1,47 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  color-scheme: light;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+}
+
+body {
+  @apply bg-paper text-ink font-sans antialiased;
+}
+
+/* Instrument readouts use tabular figures so values do not jitter frame to frame */
+.readout {
+  font-variant-numeric: tabular-nums;
+  @apply font-mono;
+}
+
+.panel {
+  @apply bg-panel border border-rule;
+}
+
+.panel-title {
+  @apply text-[13px] font-semibold tracking-tight text-ink border-b border-rule px-3 py-2;
+}
+
+.field-label {
+  @apply text-[11px] text-muted;
+}
+
+:focus-visible {
+  outline: 2px solid #24485f;
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation: none !important;
+    transition: none !important;
+  }
+}
