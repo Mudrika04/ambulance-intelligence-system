@@ -1,0 +1,4 @@
+# Install on top of requirements.txt to enable REAL MODEL MODE.
+# Pulls torch/torchvision (several GB). CPU inference works; a GPU is faster.
+-r requirements.txt
+ultralytics==8.4.153

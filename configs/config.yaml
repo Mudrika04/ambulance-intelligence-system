@@ -1,0 +1,100 @@
+# Ambulance Intelligence System - prototype configuration
+# NOTE: every value below is a PROTOTYPE DEFAULT chosen for demonstration.
+# None of these values are experimentally validated optima.
+
+mode: demo            # demo | real   (real requires a custom trained YOLO model)
+
+video:
+  source: "data/sample/demo_intersection.mp4"
+  source_type: file   # file | webcam | rtsp
+  loop: true
+  target_fps: 15      # pipeline throttle; 0 = as fast as possible
+
+model:
+  path: "models/ambulance_yolov8.pt"
+  confidence_threshold: 0.60
+  iou_threshold: 0.45
+  device: "cpu"
+  ambulance_classes: ["ambulance"]
+
+tracking:
+  algorithm: "bytetrack"      # bytetrack | botsort(not implemented)
+  high_threshold: 0.60
+  low_threshold: 0.20
+  match_iou: 0.25
+  max_age: 15                 # frames a track survives without a detection
+  min_hits: 2                 # frames before a track is confirmed
+
+validation:
+  required_frames: 5          # configurable prototype parameter, NOT an optimum
+  min_confidence: 0.55
+  require_inbound: true
+  require_roi: true
+
+trajectory:
+  min_points: 4
+  stationary_speed_px_s: 6.0
+  direction_consistency_min: 0.55
+
+proximity:
+  # relative ETA is a camera-based prototype estimate (image-space), not GPS
+  near_eta_s: 6.0
+  medium_eta_s: 15.0
+  max_eta_s: 120.0
+
+priority:
+  threshold: 0.70
+  weights:
+    detection_confidence: 0.20
+    temporal_consistency: 0.20
+    approach_certainty: 0.15
+    proximity_urgency: 0.20
+    eta_urgency: 0.15
+    trajectory_confidence: 0.10
+
+signal:
+  prepare_duration: 3
+  all_red_duration: 2
+  emergency_green_max: 25
+  clearance_duration: 5
+  normal_phase_duration: 12
+  yellow_duration: 3
+
+green_corridor:
+  intersections:
+    - id: "INT-01"
+      name: "Kalyanpur Crossing"
+      role: primary
+    - id: "INT-02"
+      name: "Vikas Nagar Junction"
+      role: downstream
+    - id: "INT-03"
+      name: "Rawatpur Gate"
+      role: downstream
+
+roi:
+  # Normalised polygons (0..1 of frame width/height). Externally configurable.
+  intersection_center: [0.5, 0.56]
+  control_radius: 0.13
+  approaches:
+    NORTH: [[0.40, 0.00], [0.60, 0.00], [0.60, 0.45], [0.40, 0.45]]
+    SOUTH: [[0.40, 0.68], [0.60, 0.68], [0.60, 1.00], [0.40, 1.00]]
+    WEST:  [[0.00, 0.45], [0.36, 0.45], [0.36, 0.68], [0.00, 0.68]]
+    EAST:  [[0.64, 0.45], [1.00, 0.45], [1.00, 0.68], [0.64, 0.68]]
+  zones:
+    FAR_ZONE: 1.00
+    MEDIUM_ZONE: 0.42
+    NEAR_ZONE: 0.24
+    CONTROL_ZONE: 0.13
+    CLEARANCE_ZONE: 0.07
+
+database:
+  url: "sqlite:///data/ais.db"
+
+api:
+  host: "0.0.0.0"
+  port: 8000
+  cors_origins: ["http://localhost:5173", "http://127.0.0.1:5173"]
+
+logging:
+  level: "INFO"
