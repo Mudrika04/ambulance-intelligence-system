@@ -1,0 +1,35 @@
+# Secrets
+.env
+*.pem
+*.key
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.pytest_cache/
+.ruff_cache/
+*.egg-info/
+
+# Node
+node_modules/
+frontend/dist/
+frontend/.vite/
+
+# Data and runtime artefacts
+data/*.db
+data/*.db-*
+data/experiments/*.json
+!data/experiments/.gitkeep
+data/sample/*.mp4
+data/sample/*.groundtruth.json
+
+# Models (trained weights are distributed separately)
+models/*.pt
+!models/README.md
+
+# OS / editor
+.DS_Store
+.idea/
+.vscode/
