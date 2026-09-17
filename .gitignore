@@ -27,6 +27,7 @@ data/sample/*.groundtruth.json
 
 # Models (trained weights are distributed separately)
 models/*.pt
+!models/ambulance_yolov8.pt
 !models/README.md
 
 # OS / editor
