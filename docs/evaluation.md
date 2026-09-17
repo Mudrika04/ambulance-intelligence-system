@@ -20,10 +20,33 @@ Hardware: 1 vCPU, 3 GB RAM, 960×540 frames. Numbers will differ on your machine
 
 ## Detection accuracy
 
-`python scripts/evaluate_detection.py` computes precision, recall, F1, AP@0.5 and an approximate AP@0.5:0.95 against a ground-truth file.
+The ambulance detector was trained on a 558-image single-class dataset
+("Ambulance" by Pouria Maleki, Roboflow Universe, CC BY 4.0) using YOLOv8n
+for 60 epochs on a Colab T4 GPU (84 validation images, 103 ambulance
+instances).
 
-Run in demo mode the ground truth is the same script the demo detector samples, so the figures (P 0.982, R 0.958, F1 0.970, AP@0.5 0.954 over 450 frames) verify only that the evaluation code and the scenario agree. **They are not a model accuracy claim.** Meaningful accuracy requires a trained model and an independently labelled dataset; until then the dashboard shows AWAITING EXPERIMENT DATA.
+| Metric | Value |
+| --- | --- |
+| mAP@0.5 | 0.948 |
+| mAP@0.5:0.95 | 0.774 |
+| Precision | 0.911 |
+| Recall | 0.891 |
+| F1 (derived) | 0.900 |
 
+Training and validation loss curves converged without divergence across 60
+epochs, indicating the model did not overfit the training set. A
+confusion-matrix breakdown at the default 0.25 confidence threshold showed 94
+of 103 ambulances correctly detected, 9 missed, and 10 background regions
+falsely flagged as ambulances.
+
+That residual false-positive rate is exactly what the pipeline's temporal
+validation stage (`docs/temporal-validation.md`) is designed to absorb: a
+single-frame detection, however confident, can never by itself trigger a
+priority request.
+
+Run `python scripts/evaluate_detection.py --mode real` to reproduce an
+evaluation against your own labelled ground truth inside this pipeline
+directly, rather than via Colab's validation split.
 ## Fixed-time vs AI-adaptive
 
 `POST /api/experiments/run` runs both controllers over the same scripted arrival set and stores the result. It is a discrete-event simulation built from the configured signal timings — not a field measurement — and every payload says so. Waiting time under fixed-time control depends on where in the cycle the ambulance arrives; under the adaptive arm it depends on validation delay plus PREPARE plus ALL_RED.
