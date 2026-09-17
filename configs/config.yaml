@@ -4,11 +4,15 @@
 
 mode: demo            # demo | real   (real requires a custom trained YOLO model)
 
+# video:
+#   source: "data/sample/demo_intersection.mp4"
+#   source_type: file   # file | webcam | rtsp
+#   loop: true
+#   target_fps: 15      # pipeline throttle; 0 = as fast as possible
+
 video:
-  source: "data/sample/demo_intersection.mp4"
-  source_type: file   # file | webcam | rtsp
-  loop: true
-  target_fps: 15      # pipeline throttle; 0 = as fast as possible
+  source: "data/sample/real_test.jpg"   # or your .mp4 filename
+  source_type: file
 
 model:
   path: "models/ambulance_yolov8.pt"
