@@ -47,7 +47,7 @@ Kanpur's arterial junctions run fixed-time plans. A camera already exists at man
 | Control-console dashboard (React + TypeScript) | IMPLEMENTED · TESTED (component tests; no browser screenshots captured yet) |
 | Fixed-time vs AI-adaptive experiment runner | IMPLEMENTED · SIMULATION |
 | Ablation study (A/B/C/D) | IMPLEMENTED · TESTED |
-| Detection evaluation (P/R/F1/AP) | IMPLEMENTED · awaiting a trained model and a labelled dataset for meaningful numbers |
+| Detection evaluation (P/R/F1/AP) | IMPLEMENTED · TESTED — trained model achieves mAP@0.5 0.948 on its validation split (see docs/evaluation.md) | |
 
 ## 5. Architecture
 
