@@ -22,7 +22,7 @@ data/*.db
 data/*.db-*
 data/experiments/*.json
 !data/experiments/.gitkeep
-data/sample/*.mp4
+
 data/sample/*.groundtruth.json
 
 # Models (trained weights are distributed separately)
